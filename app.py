@@ -21,6 +21,202 @@ from streamlit_drawable_canvas import st_canvas
 import numpy as np
 from services.erase_foreground import erase_foreground
 
+# Add this CSS code to your Streamlit app
+# Place this function at the top of your main.py file, after the imports
+
+def add_ripple_animation():
+    """Add animated ripple background effect to the Streamlit app"""
+    st.markdown("""
+    <style>
+    /* Main container with ripple background */
+    .stApp {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Ripple container */
+    .ripple-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+    
+    /* Individual ripple circles */
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        animation: ripple-animation 6s infinite ease-in-out;
+        backdrop-filter: blur(1px);
+    }
+    
+    /* Different ripple sizes and positions */
+    .ripple:nth-child(1) {
+        width: 200px;
+        height: 200px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .ripple:nth-child(2) {
+        width: 300px;
+        height: 300px;
+        top: 20%;
+        right: 15%;
+        animation-delay: 1s;
+    }
+    
+    .ripple:nth-child(3) {
+        width: 150px;
+        height: 150px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 2s;
+    }
+    
+    .ripple:nth-child(4) {
+        width: 250px;
+        height: 250px;
+        bottom: 30%;
+        right: 10%;
+        animation-delay: 3s;
+    }
+    
+    .ripple:nth-child(5) {
+        width: 180px;
+        height: 180px;
+        top: 50%;
+        left: 50%;
+        animation-delay: 4s;
+    }
+    
+    .ripple:nth-child(6) {
+        width: 120px;
+        height: 120px;
+        top: 70%;
+        left: 70%;
+        animation-delay: 5s;
+    }
+    
+    /* Ripple animation keyframes */
+    @keyframes ripple-animation {
+        0% {
+            transform: scale(0.8) translate(0, 0);
+            opacity: 0.7;
+        }
+        25% {
+            transform: scale(1.2) translate(20px, -10px);
+            opacity: 0.5;
+        }
+        50% {
+            transform: scale(1.5) translate(-15px, 25px);
+            opacity: 0.3;
+        }
+        75% {
+            transform: scale(1.8) translate(30px, -20px);
+            opacity: 0.2;
+        }
+        100% {
+            transform: scale(2.2) translate(-25px, 15px);
+            opacity: 0;
+        }
+    }
+    
+    /* Floating ripple effect */
+    .floating-ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
+        animation: float-ripple 8s infinite linear;
+    }
+    
+    .floating-ripple:nth-child(7) {
+        width: 100px;
+        height: 100px;
+        top: 15%;
+        left: 60%;
+        animation-delay: 1.5s;
+    }
+    
+    .floating-ripple:nth-child(8) {
+        width: 80px;
+        height: 80px;
+        top: 80%;
+        left: 30%;
+        animation-delay: 3.5s;
+    }
+    
+    @keyframes float-ripple {
+        0% {
+            transform: translateY(0px) rotate(0deg);
+            opacity: 0.6;
+        }
+        50% {
+            transform: translateY(-20px) rotate(180deg);
+            opacity: 0.3;
+        }
+        100% {
+            transform: translateY(0px) rotate(360deg);
+            opacity: 0.6;
+        }
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Main content area styling */
+    .main .block-container {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 1rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 0.5rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: transparent;
+        border-radius: 8px;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+    }
+    </style>
+    
+    <div class="ripple-container">
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="floating-ripple"></div>
+        <div class="floating-ripple"></div>
+    </div>
+    """, unsafe_allow_html=True)
+
 # Configure Streamlit page
 st.set_page_config(
     page_title="AdSnap Studio",
@@ -138,6 +334,7 @@ def auto_check_images(status_container):
 
 def main():
     st.title("AdSnap Studio")
+    add_ripple_animation()
     initialize_session_state()
     
     # Sidebar for API key
